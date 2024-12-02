@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 axum = "0.7.9"
+tokio = "1.41.1"
