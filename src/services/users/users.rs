@@ -1,4 +1,6 @@
-pub async fn validate_user(email: String, password: String) -> Result<Ok(), Err()> {
+use std::ops::BitAnd;
+use std::sync::atomic::AtomicBool;
 
-    return Result::Ok(());
+pub async fn validate_user(email: String, password: String) -> Result<bool, bool> {
+    return Ok(true);
 }
