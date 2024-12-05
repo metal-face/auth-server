@@ -1,10 +1,10 @@
 use axum::{routing::get, routing::post, Json, Router};
 use serde_json::json;
+use sqlx::postgres::PgPoolOptions;
+use sqlx::Postgres;
+use sqlx_core::pool::Pool;
 use std::sync::Arc;
 use std::time::Duration;
-use sqlx::Postgres;
-use sqlx::postgres::PgPoolOptions;
-use sqlx_core::pool::PoolOptions;
 use tokio::net::TcpListener;
 
 mod api;
@@ -15,7 +15,15 @@ struct AppState {}
 
 #[tokio::main]
 async fn main() {
-    let pool: PoolOptions<Postgres> = PgPoolOptions::new().max_connections(5).acquire_timeout(Duration::from_secs(5));
+    let db_connection_str: String = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "postgres://metalface:password@localhost".to_string());
+
+    let pool: Pool<Postgres> = PgPoolOptions::new()
+        .max_connections(5)
+        .acquire_timeout(Duration::from_secs(5))
+        .connect(&db_connection_str)
+        .await
+        .expect("Can't connect to database");
 
     let shared_state: Arc<AppState> = Arc::new(AppState {});
 
