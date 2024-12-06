@@ -1,5 +1,5 @@
-use crate::api::v1::users::users::{create_user, CreateUser};
-use axum::{routing::post, Json, Router};
+use crate::api::v1::users::users::create_user;
+use axum::{routing::post, Router};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 use std::sync::Arc;
@@ -7,6 +7,7 @@ use std::time::Duration;
 use tokio::net::TcpListener;
 
 mod api;
+mod config;
 mod repositories;
 mod services;
 
@@ -28,7 +29,9 @@ async fn main() {
 
     let shared_state: Arc<AppState> = Arc::new(AppState { db: pool });
 
-    let app: Router = Router::new().route("/users", post(create_user));
+    let app: Router = Router::new()
+        .route("/users", post(create_user))
+        .with_state(shared_state);
 
     let listener: TcpListener = tokio::net::TcpListener::bind("0.0.0.0:6969").await.unwrap();
     axum::serve(listener, app).await.unwrap();
