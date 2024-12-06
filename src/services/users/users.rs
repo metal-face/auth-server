@@ -1,6 +1,8 @@
-use std::ops::BitAnd;
-use std::sync::atomic::AtomicBool;
+use crate::repositories::users::users::User;
+use chrono::{DateTime, Local};
+use sqlx::PgPool;
 
-pub async fn validate_user(email: String, password: String) -> Result<bool, bool> {
-    return Ok(true);
+pub async fn validate_user(email: String, password: String, pool: &PgPool) -> anyhow::Result<User> {
+    let user = Default::default();
+    Ok(user)
 }
