@@ -7,7 +7,6 @@ use std::time::Duration;
 use tokio::net::TcpListener;
 
 mod api;
-mod config;
 mod repositories;
 mod services;
 
@@ -15,7 +14,7 @@ struct AppState {
     db: PgPool,
 }
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() {
     let db_connection_str: String = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| "postgres://metalface:password@localhost".to_string());
