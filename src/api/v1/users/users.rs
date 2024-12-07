@@ -36,7 +36,7 @@ pub async fn create_user(
         deleted_at: None,
     };
 
-    match validate_user(user, &state.db) {
+    match validate_user(user, &state.db).await? {
         Ok(user) => json!({ "status": 200, "user": user}),
         Err(err) => json!({ "error": err.to_string()}),
     }
