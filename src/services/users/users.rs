@@ -1,5 +1,4 @@
 use crate::repositories::users::users::{create_user, User};
-use chrono::{DateTime, Local};
 use sqlx::PgPool;
 
 pub async fn validate_user(user: User, pool: &PgPool) -> anyhow::Result<User> {
