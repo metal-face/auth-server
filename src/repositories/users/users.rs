@@ -1,9 +1,9 @@
 use chrono::{DateTime, Local};
+use serde::Serialize;
 use sqlx::postgres::PgPool;
-use sqlx::{query, Error};
+use sqlx::query;
 
-#[derive(sqlx::Type)]
-#[sqlx(transparent)]
+#[derive(Default, Serialize)]
 pub struct User {
     pub first_name: String,
     pub last_name: String,
@@ -14,7 +14,7 @@ pub struct User {
     pub deleted_at: Option<DateTime<Local>>,
 }
 
-pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User> {
+pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User, anyhow::Error> {
     let result: User = query!(
         r#"INSERT INTO users ( user ) VALUES ( $1 ) RETURNING *"#,
         Json(user) as User,
