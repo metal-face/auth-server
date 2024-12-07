@@ -1,9 +1,9 @@
 use chrono::{DateTime, Local};
 use sqlx::postgres::PgPool;
-use sqlx::types::Json;
 use sqlx::{query, Error};
 
-#[derive(Default)]
+#[derive(sqlx::Type)]
+#[sqlx(transparent)]
 pub struct User {
     pub first_name: String,
     pub last_name: String,
@@ -17,7 +17,7 @@ pub struct User {
 pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User> {
     let result: User = query!(
         r#"INSERT INTO users ( user ) VALUES ( $1 ) RETURNING *"#,
-        Json(user) as _
+        Json(user) as User,
     )
     .fetch_one(pool)
     .await?;
