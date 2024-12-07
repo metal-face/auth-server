@@ -5,11 +5,11 @@ use axum::extract::State;
 use axum::response::IntoResponse;
 use axum::Json;
 use chrono::Local;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::sync::Arc;
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct CreateUser {
     first_name: String,
     last_name: String,
@@ -36,8 +36,8 @@ pub async fn create_user(
         deleted_at: None,
     };
 
-    match validate_user(user, &state.db).await? {
-        Ok(user) => json!({ "status": 200, "user": user}),
+    match validate_user(user, &state.db).await {
+        Ok(user) => json!({ "status": 200, "data": {"user": user}, "success": true }),
         Err(err) => json!({ "error": err.to_string()}),
     }
 }
