@@ -17,6 +17,7 @@ pub struct CreateUser {
     password: String,
 }
 
+// TODO: figure out proper return type
 pub async fn create_user(
     Json(CreateUser {
         first_name,
