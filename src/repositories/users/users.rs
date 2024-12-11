@@ -3,7 +3,7 @@ use serde::Serialize;
 use sqlx::postgres::PgPool;
 use sqlx::query;
 
-#[derive(Default, Serialize)]
+#[derive(sqlx::FromRow, Serialize)]
 pub struct User {
     pub first_name: String,
     pub last_name: String,
@@ -15,12 +15,17 @@ pub struct User {
 }
 
 pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User, anyhow::Error> {
-    let result: User = query!(
-        r#"INSERT INTO users ( user ) VALUES ( $1 ) RETURNING *"#,
-        Json(user) as User,
+    query(
+        "INSERT INTO users ( first_name, last_name, email, password, created_at, updated_at ) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *",
     )
-    .fetch_one(pool)
-    .await?;
+        .bind(user.first_name.clone())
+        .bind(user.last_name.clone())
+        .bind(user.email.clone())
+        .bind(user.password.clone())
+        .bind(user.created_at.clone())
+        .bind(user.updated_at.clone())
+        .execute(pool)
+        .await?;
 
-    Ok(result)
+    Ok(user)
 }
