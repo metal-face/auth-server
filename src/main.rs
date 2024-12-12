@@ -15,7 +15,8 @@ struct AppState {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
-    let db_connection_str = String::from("jdbc:postgresql://localhost:5432/postgres");
+    let db_connection_str = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "postgresql://localhost:5432/auth-server".to_string());
 
     let pool = PgPoolOptions::new()
         .max_connections(5)
