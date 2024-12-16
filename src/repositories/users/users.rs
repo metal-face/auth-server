@@ -1,4 +1,6 @@
 use chrono::{DateTime, Local};
+use password_hash::rand_core::OsRng;
+use password_hash::{Salt, SaltString};
 use serde::Serialize;
 use sqlx::postgres::PgPool;
 use sqlx::query;
@@ -15,17 +17,22 @@ pub struct User {
 }
 
 pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User, anyhow::Error> {
+    let Some(password) = &user.password;
+
+    let salt_string = SaltString::generate(&mut OsRng);
+    let salt: Salt = salt_string.try_into()?;
+
     query(
-        "INSERT INTO users ( first_name, last_name, email, password, created_at, updated_at ) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *",
-    )
-        .bind(user.first_name.clone())
-        .bind(user.last_name.clone())
-        .bind(user.email.clone())
-        .bind(user.password.clone())
-        .bind(user.created_at.clone())
-        .bind(user.updated_at.clone())
-        .execute(pool)
-        .await?;
+            "INSERT INTO users ( first_name, last_name, email, password, created_at, updated_at ) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *",
+        )
+            .bind(user.first_name.clone())
+            .bind(user.last_name.clone())
+            .bind(user.email.clone())
+            .bind(user.password.clone())
+            .bind(user.created_at.clone())
+            .bind(user.updated_at.clone())
+            .execute(pool)
+            .await?;
 
     Ok(user)
 }
