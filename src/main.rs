@@ -1,3 +1,4 @@
+use crate::api::v1::authenticate::authenticate::log_in;
 use crate::api::v1::users::users::create_user;
 use axum::{routing::post, Router};
 use sqlx::postgres::PgPoolOptions;
@@ -29,6 +30,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/users", post(create_user))
+        .route("/authenticate/credentials", post(log_in))
         .with_state(shared_state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:6969").await.unwrap();
