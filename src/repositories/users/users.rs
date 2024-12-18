@@ -48,3 +48,12 @@ pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User, anyh
 
     Ok(user)
 }
+
+pub async fn get_user_by_email(pool: &PgPool, email: &str) -> Result<User, anyhow::Error> {
+    let result = query("SELECT * FROM users WHERE email = $1")
+        .bind(email)
+        .execute(pool)
+        .await?;
+
+    // result.Ok(user)
+}
