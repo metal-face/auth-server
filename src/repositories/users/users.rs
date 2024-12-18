@@ -1,5 +1,4 @@
 use argon2::{Argon2, PasswordHasher};
-use axum::response::IntoResponse;
 use chrono::{DateTime, Local};
 use password_hash::rand_core::OsRng;
 use password_hash::{PasswordHash, PasswordVerifier, Salt, SaltString};
@@ -25,16 +24,18 @@ fn verify_password(password: &str, hash: PasswordHash) -> bool {
 }
 
 pub async fn create_user(pool: &PgPool, user: User) -> anyhow::Result<User, anyhow::Error> {
-    let Some(password) = &user.password;
+    let Some(password) = &user.password else {
+        panic!()
+    };
 
     let salt_string = SaltString::generate(&mut OsRng);
-    let salt: Salt = salt_string.try_into()?;
+    let salt: Salt = salt_string.as_salt();
 
     let argon2 = Argon2::default();
     let hash = argon2.hash_password(password.as_bytes(), salt).unwrap();
 
     query(
-            "INSERT INTO users ( first_name, last_name, email, password, created_at, updated_at ) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *",
+            "INSERT INTO users ( first_name, last_name, email, hashed_password, created_at, updated_at ) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *",
         )
             .bind(user.first_name.clone())
             .bind(user.last_name.clone())
