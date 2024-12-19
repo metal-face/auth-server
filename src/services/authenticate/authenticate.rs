@@ -1,7 +1,12 @@
 use crate::repositories::users::users::User;
 use chrono::Local;
+use sqlx::PgPool;
 
-pub async fn validate_user_credentials(email: String, password: String) -> anyhow::Result<User> {
+pub async fn validate_user_credentials(
+    email: String,
+    password: String,
+    pool: &PgPool,
+) -> anyhow::Result<User> {
     let temp = User {
         first_name: String::from(""),
         last_name: String::from(""),
