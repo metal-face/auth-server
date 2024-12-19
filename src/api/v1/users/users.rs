@@ -30,7 +30,7 @@ pub async fn create_user(
         first_name,
         last_name,
         email,
-        password: Some(password),
+        hashed_password: password,
         created_at: Local::now(),
         updated_at: Local::now(),
         deleted_at: None,
