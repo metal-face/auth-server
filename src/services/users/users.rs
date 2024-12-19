@@ -10,10 +10,8 @@ pub async fn validate_user(user: User, pool: &PgPool) -> anyhow::Result<User, an
         ..
     } = user;
 
-    if let Some(password) = &user.password {
-        if password.chars().count() < 12 {
-            bail!("User password must be at least 12 characters");
-        }
+    if user.hashed_password.chars().count() < 12 {
+        bail!("User password must be at least 12 characters");
     }
 
     let is_valid_email_address = EmailAddress::is_valid(&user.email);
