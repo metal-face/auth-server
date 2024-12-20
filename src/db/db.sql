@@ -16,12 +16,12 @@ CREATE INDEX users_email ON users (email);
 
 CREATE TABLE access_tokens
 (
-    id              uuid primary key     default uuid_generate_v4(),
-    user_id         uuid        not null references users (id),
-    token           text        not null unique,
-    created_at      timestamptz not null default now(),
-    last_updated_at timestamptz not null default now(),
-    expires_at      timestamptz not null
+    id         uuid primary key     default uuid_generate_v4(),
+    user_id    uuid        not null references users (id),
+    token      text        not null unique,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
+    expires_at timestamptz not null
 );
 
 CREATE TABLE application
