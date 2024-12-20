@@ -13,6 +13,16 @@ pub struct Credentials {
     password: String,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct Claims {
+    sub: String,
+    first_name: String,
+    last_name: String,
+    email: String,
+    iat: u64,
+    exp: u64,
+}
+
 #[axum::debug_handler]
 pub async fn log_in(
     State(state): State<Arc<AppState>>,
