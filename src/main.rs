@@ -16,6 +16,8 @@ struct AppState {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
+    dotenv::dotenv().ok();
+
     let db_connection_str = std::env::var("DATABASE_URL")
         .unwrap_or_else(|_| "postgresql://localhost:5432/auth-server".to_string());
 
