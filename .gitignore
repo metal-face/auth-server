@@ -1,3 +1,4 @@
 # Generated Files
 /target/
 .env
+*.pem
