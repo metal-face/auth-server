@@ -1,16 +1,17 @@
+use crate::api::v1::users::users::UserDTO;
 use crate::repositories::users::users::{create_user, User};
 use anyhow::bail;
 use email_address::EmailAddress;
 use sqlx::PgPool;
 
-pub async fn validate_user(user: User, pool: &PgPool) -> anyhow::Result<User, anyhow::Error> {
-    let User {
+pub async fn validate_user(user: UserDTO, pool: &PgPool) -> anyhow::Result<User, anyhow::Error> {
+    let UserDTO {
         ref first_name,
         ref last_name,
         ..
     } = user;
 
-    if user.hashed_password.chars().count() < 12 {
+    if user.password.chars().count() < 12 {
         bail!("User password must be at least 12 characters");
     }
 
