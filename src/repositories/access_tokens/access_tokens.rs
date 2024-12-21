@@ -11,9 +11,9 @@ struct AccessToken {
 }
 
 pub async fn create_access_token(
-    access_token: String,
+    access_token: &String,
     user_id: String,
-    expires_at: u64,
+    expires_at: DateTime<Local>,
     pool: &PgPool,
 ) -> anyhow::Result<bool> {
     query("INSERT INTO access_tokens (token, user_id, expires_at) VALUES ($1, $2, $3)")
