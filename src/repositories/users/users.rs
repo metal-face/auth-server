@@ -2,8 +2,8 @@ use crate::api::v1::users::users::UserDTO;
 use argon2::{Argon2, PasswordHasher};
 use chrono::{DateTime, Local};
 use password_hash::rand_core::OsRng;
-use password_hash::{PasswordHash, PasswordVerifier, Salt, SaltString};
-use serde::Serialize;
+use password_hash::{Salt, SaltString};
+use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgPool;
 use sqlx::{query, query_as, Row};
 
@@ -17,12 +17,6 @@ pub struct User {
     pub created_at: DateTime<Local>,
     pub updated_at: DateTime<Local>,
     pub deleted_at: Option<DateTime<Local>>,
-}
-
-pub fn verify_password(password: &str, hash: PasswordHash) -> bool {
-    Argon2::default()
-        .verify_password(password.as_bytes(), &hash)
-        .is_ok()
 }
 
 pub async fn create_user(pool: &PgPool, user: UserDTO) -> anyhow::Result<User, anyhow::Error> {
@@ -61,7 +55,7 @@ pub async fn create_user(pool: &PgPool, user: UserDTO) -> anyhow::Result<User, a
 }
 
 pub async fn get_user_by_email(pool: &PgPool, email: &str) -> Result<User, anyhow::Error> {
-    let result = query_as::<_, User>("SELECT u.first_name, u.last_name, u.email, u.hashed_password, u.created_at, u.updated_at, u.deleted_at FROM users as u WHERE email = $1")
+    let result = query_as::<_, User>("SELECT u.id::text as id, u.first_name, u.last_name, u.email, u.hashed_password, u.created_at, u.updated_at, u.deleted_at FROM users as u WHERE email = $1")
         .bind(email)
         .fetch_one(pool)
         .await?;
