@@ -1,10 +1,11 @@
+use crate::repositories::access_tokens::access_tokens::create_access_token;
 use crate::services::authenticate::authenticate::validate_user_credentials;
 use crate::AppState;
-use axum::body::Body;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
+use chrono::DateTime;
 use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
 use std::env;
@@ -43,6 +44,9 @@ pub async fn log_in(
                 .unwrap()
                 .as_secs();
 
+            let date_time = DateTime::from_timestamp((in_at + 1_209_600) as i64, 0);
+            let expires_at = DateTime::from(date_time.unwrap());
+
             let my_claims = Claims {
                 jti: Uuid::new_v4().to_string(),
                 aud: "client".to_owned(),
@@ -59,19 +63,18 @@ pub async fn log_in(
                 &Header::default(),
                 &my_claims,
                 &EncodingKey::from_secret(env::var("PRIVATE_KEY").unwrap().as_ref()),
-            );
+            )
+            .unwrap();
+
+            let token = create_access_token(&jwt, user.id, expires_at, &state.db)
+                .await
+                .unwrap();
+
+            println!("{:?}", token);
 
             Ok(Response::builder()
                 .status(StatusCode::OK)
-                .body(
-                    Json(jwt.map_err(|_| {
-                        Response::builder()
-                            .status(StatusCode::INTERNAL_SERVER_ERROR)
-                            .body(Body::empty().into_response())
-                            .unwrap()
-                    })?)
-                    .into_response(),
-                )
+                .body(Json(&jwt).into_response())
                 .unwrap())
         }
 
