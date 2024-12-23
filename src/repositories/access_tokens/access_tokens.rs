@@ -1,12 +1,13 @@
 use chrono::{DateTime, Local};
-use serde::{Deserialize, Serialize};
-use sqlx::{query, PgPool, Row};
+use serde::Serialize;
+use sqlx::{query, Decode, PgPool, Row};
+use uuid::Uuid;
 
-#[derive(Deserialize, Serialize, sqlx::FromRow)]
+#[derive(Serialize, sqlx::FromRow, Debug)]
 pub struct AccessToken {
-    pub id: String,
+    pub id: Uuid,
     pub token: String,
-    pub user_id: String,
+    pub user_id: Uuid,
     pub created_at: DateTime<Local>,
     pub updated_at: DateTime<Local>,
     pub expires_at: DateTime<Local>,
@@ -14,12 +15,12 @@ pub struct AccessToken {
 
 pub async fn create_access_token(
     token: &String,
-    user_id: String,
+    user_id: Uuid,
     expires_at: DateTime<Local>,
     pool: &PgPool,
 ) -> anyhow::Result<AccessToken, anyhow::Error> {
     let result =
-        query("INSERT INTO access_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)")
+        query("INSERT INTO access_tokens (user_id, token, expires_at) VALUES ($1, $2, $3) RETURNING id, user_id, token, created_at, updated_at, expires_at")
             .bind(user_id)
             .bind(token)
             .bind(expires_at)
