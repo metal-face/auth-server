@@ -47,10 +47,21 @@ pub async fn create_user(
     };
 
     match validate_user(user, &state.db).await {
-        Ok(user) => Ok(Response::builder()
-            .status(StatusCode::OK)
-            .body(Json(user).into_response())
-            .unwrap()),
+        Ok(user) => {
+            let user_dto = UserDTO {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                password: user.hashed_password,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+                deleted_at: user.deleted_at,
+            };
+            Ok(Response::builder()
+                .status(StatusCode::OK)
+                .body(Json(user_dto).into_response())
+                .unwrap())
+        }
         Err(err) => Err(Response::builder()
             .status(StatusCode::BAD_REQUEST)
             .body(err.to_string().into_response())
