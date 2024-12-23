@@ -3,13 +3,14 @@ use argon2::{Argon2, PasswordHasher};
 use chrono::{DateTime, Local};
 use password_hash::rand_core::OsRng;
 use password_hash::{Salt, SaltString};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use sqlx::postgres::PgPool;
 use sqlx::{query, query_as, Row};
+use uuid::Uuid;
 
 #[derive(sqlx::FromRow, Serialize)]
 pub struct User {
-    pub id: String,
+    pub id: Uuid,
     pub first_name: String,
     pub last_name: String,
     pub email: String,
@@ -55,7 +56,7 @@ pub async fn create_user(pool: &PgPool, user: UserDTO) -> anyhow::Result<User, a
 }
 
 pub async fn get_user_by_email(pool: &PgPool, email: &str) -> Result<User, anyhow::Error> {
-    let result = query_as::<_, User>("SELECT u.id::text as id, u.first_name, u.last_name, u.email, u.hashed_password, u.created_at, u.updated_at, u.deleted_at FROM users as u WHERE email = $1")
+    let result = query_as::<_, User>("SELECT u.id as id, u.first_name, u.last_name, u.email, u.hashed_password, u.created_at, u.updated_at, u.deleted_at FROM users as u WHERE email = $1")
         .bind(email)
         .fetch_one(pool)
         .await?;
