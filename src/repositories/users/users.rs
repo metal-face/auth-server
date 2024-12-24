@@ -1,43 +1,26 @@
-use crate::api::v1::users::users::UserDTO;
+use crate::models::user::User;
+use crate::models::user_dto::UserDTO;
 use argon2::{Argon2, PasswordHasher};
-use chrono::{DateTime, Local};
 use password_hash::rand_core::OsRng;
 use password_hash::{Salt, SaltString};
-use serde::Serialize;
 use sqlx::postgres::PgPool;
 use sqlx::{query, query_as, Row};
-use uuid::Uuid;
-
-#[derive(sqlx::FromRow, Serialize)]
-pub struct User {
-    pub id: Uuid,
-    pub first_name: String,
-    pub last_name: String,
-    pub email: String,
-    pub hashed_password: String,
-    pub created_at: DateTime<Local>,
-    pub updated_at: DateTime<Local>,
-    pub deleted_at: Option<DateTime<Local>>,
-}
 
 pub async fn create_user(pool: &PgPool, user: UserDTO) -> anyhow::Result<User, anyhow::Error> {
+    let password = user.password.unwrap_or_default();
     let salt_string = SaltString::generate(&mut OsRng);
     let salt: Salt = salt_string.as_salt();
 
     let argon2 = Argon2::default();
-    let hash = argon2
-        .hash_password(user.password.as_bytes(), salt)
-        .unwrap();
+    let hash = argon2.hash_password(password.as_bytes(), salt).unwrap();
 
     let result = query(
-            "INSERT INTO users ( first_name, last_name, email, hashed_password, created_at, updated_at ) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING (id, first_name, last_name, email, hashed_password, created_at, updated_at, deleted_at)",
+            "INSERT INTO users ( first_name, last_name, email, hashed_password) VALUES ( $1, $2, $3, $4 ) RETURNING (id, first_name, last_name, email, hashed_password, created_at, updated_at, deleted_at)",
         )
             .bind(user.first_name.clone())
             .bind(user.last_name.clone())
             .bind(user.email.clone())
             .bind(hash.serialize().to_string())
-            .bind(user.created_at.clone())
-            .bind(user.updated_at.clone())
             .fetch_one(pool)
             .await?;
 
