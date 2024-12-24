@@ -1,9 +1,9 @@
 use chrono::{DateTime, Local};
 use serde::Serialize;
-use sqlx::{query, Decode, PgPool, Row};
+use sqlx::{query, PgPool, Row};
 use uuid::Uuid;
 
-#[derive(Serialize, sqlx::FromRow, Debug)]
+#[derive(Serialize, sqlx::FromRow)]
 pub struct AccessToken {
     pub id: Uuid,
     pub token: String,
