@@ -66,11 +66,10 @@ pub async fn log_in(
             )
             .unwrap();
 
-            let token = create_access_token(&jwt, user.id, expires_at, &state.db)
+            create_access_token(&jwt, user.id, expires_at, &state.db)
                 .await
                 .unwrap();
 
-            println!("{:?}", token);
 
             Ok(Response::builder()
                 .status(StatusCode::OK)
