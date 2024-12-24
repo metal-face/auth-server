@@ -1,4 +1,5 @@
-use crate::repositories::users::users::{get_user_by_email, User};
+use crate::models::user::User;
+use crate::repositories::users::users::get_user_by_email;
 use argon2::Argon2;
 use password_hash::{PasswordHash, PasswordVerifier};
 use sqlx::PgPool;
