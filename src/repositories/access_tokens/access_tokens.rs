@@ -1,17 +1,7 @@
+use crate::models::access_token::AccessToken;
 use chrono::{DateTime, Local};
-use serde::Serialize;
 use sqlx::{query, PgPool, Row};
 use uuid::Uuid;
-
-#[derive(Serialize, sqlx::FromRow)]
-pub struct AccessToken {
-    pub id: Uuid,
-    pub token: String,
-    pub user_id: Uuid,
-    pub created_at: DateTime<Local>,
-    pub updated_at: DateTime<Local>,
-    pub expires_at: DateTime<Local>,
-}
 
 pub async fn create_access_token(
     token: &String,
