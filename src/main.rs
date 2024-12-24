@@ -9,6 +9,7 @@ use std::time::Duration;
 mod api;
 mod repositories;
 mod services;
+mod models;
 
 struct AppState {
     db: PgPool,
