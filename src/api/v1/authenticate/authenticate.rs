@@ -1,5 +1,7 @@
 use crate::repositories::access_tokens::access_tokens::create_access_token;
 use crate::services::authenticate::authenticate::validate_user_credentials;
+use crate::models::claims::Claims;
+use crate::models::credentials::Credentials;
 use crate::AppState;
 use axum::extract::State;
 use axum::http::StatusCode;
@@ -7,30 +9,11 @@ use axum::response::{IntoResponse, Response};
 use axum::Json;
 use chrono::DateTime;
 use jsonwebtoken::{encode, EncodingKey, Header};
-use serde::{Deserialize, Serialize};
 use std::env;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 
-#[derive(Serialize, Deserialize)]
-pub struct Credentials {
-    email: String,
-    password: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct Claims {
-    jti: String,
-    iss: String,
-    aud: String,
-    sub: String,
-    first_name: String,
-    last_name: String,
-    client_id: String,
-    iat: u64,
-    exp: u64,
-}
 
 #[axum::debug_handler]
 pub async fn log_in(
