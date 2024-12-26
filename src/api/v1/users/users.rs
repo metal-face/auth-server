@@ -18,6 +18,7 @@ pub async fn create_user(
     }): Json<UserDTO>,
 ) -> impl IntoResponse {
     let user = UserDTO {
+        id: None,
         first_name,
         last_name,
         email,
@@ -30,6 +31,7 @@ pub async fn create_user(
     match validate_user(user, &state.db).await {
         Ok(user) => {
             let user_dto = UserDTO {
+                id: Some(user.id),
                 first_name: user.first_name,
                 last_name: user.last_name,
                 email: user.email,
