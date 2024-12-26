@@ -15,7 +15,7 @@ pub async fn create_user(pool: &PgPool, user: UserDTO) -> anyhow::Result<User, a
     let hash = argon2.hash_password(password.as_bytes(), salt).unwrap();
 
     let result = query(
-            "INSERT INTO users ( first_name, last_name, email, hashed_password) VALUES ( $1, $2, $3, $4 ) RETURNING (id, first_name, last_name, email, hashed_password, created_at, updated_at, deleted_at)",
+            "INSERT INTO users ( first_name, last_name, email, hashed_password) VALUES ( $1, $2, $3, $4 ) RETURNING id, first_name, last_name, email, hashed_password, created_at, updated_at, deleted_at",
         )
             .bind(user.first_name.clone())
             .bind(user.last_name.clone())
