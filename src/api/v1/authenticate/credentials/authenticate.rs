@@ -15,7 +15,7 @@ pub async fn log_in(
 ) -> impl IntoResponse {
     match validate_user_credentials(email, password, &state.db).await {
         Ok(user) => {
-            let jwt = mint_jwt(&user, &state.db);
+            let jwt = mint_jwt(&user, &state.db).await;
 
             Ok(Response::builder()
                 .status(StatusCode::OK)
