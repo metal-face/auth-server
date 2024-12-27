@@ -7,9 +7,10 @@ use std::sync::Arc;
 use std::time::Duration;
 
 mod api;
+mod models;
 mod repositories;
 mod services;
-mod models;
+mod utilities;
 
 struct AppState {
     db: PgPool,
