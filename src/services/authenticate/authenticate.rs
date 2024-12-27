@@ -10,9 +10,9 @@ pub async fn validate_user_credentials(
     pool: &PgPool,
 ) -> anyhow::Result<User> {
     let db_user = get_user_by_email(pool, &email).await?;
-    let password_hash = PasswordHash::new(&db_user.hashed_password);
+    let password_hash = PasswordHash::new(&db_user.hashed_password).unwrap();
     let is_okay = Argon2::default()
-        .verify_password(password.as_bytes(), &password_hash.unwrap())
+        .verify_password(password.as_bytes(), &password_hash)
         .is_ok();
 
     if is_okay {
