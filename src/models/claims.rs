@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Claims {
+pub struct JWTClaims {
     pub jti: String,
     pub iss: String,
     pub aud: String,
