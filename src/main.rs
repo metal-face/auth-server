@@ -1,4 +1,4 @@
-use crate::api::v1::authenticate::authenticate::log_in;
+use crate::api::v1::authenticate::credentials::authenticate::log_in;
 use crate::api::v1::users::users::create_user;
 use axum::{routing::post, Router};
 use sqlx::postgres::PgPoolOptions;
