@@ -1,5 +1,6 @@
 use crate::models::user_dto::UserDTO;
 use crate::services::users::users::validate_user;
+use crate::utilities::generate_user_dto::generate_user_dto;
 use crate::AppState;
 use axum::extract::State;
 use axum::http::{Response, StatusCode};
@@ -17,29 +18,22 @@ pub async fn create_user(
         ..
     }): Json<UserDTO>,
 ) -> impl IntoResponse {
-    let user = UserDTO {
-        id: None,
-        first_name,
-        last_name,
-        email,
-        password,
-        created_at: None,
-        updated_at: None,
-        deleted_at: None,
-    };
+    let user = generate_user_dto(
+        None, first_name, last_name, email, password, None, None, None,
+    );
 
     match validate_user(user, &state.db).await {
         Ok(user) => {
-            let user_dto = UserDTO {
-                id: Some(user.id),
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                password: None,
-                created_at: Some(user.created_at),
-                updated_at: Some(user.updated_at),
-                deleted_at: user.deleted_at,
-            };
+            let user_dto = generate_user_dto(
+                Some(user.id),
+                user.first_name,
+                user.last_name,
+                user.email,
+                None,
+                Some(user.created_at),
+                Some(user.updated_at),
+                user.deleted_at,
+            );
             Ok(Response::builder()
                 .status(StatusCode::OK)
                 .body(Json(user_dto).into_response())
