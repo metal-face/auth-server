@@ -24,16 +24,8 @@ pub async fn create_user(
 
     match validate_user(user, &state.db).await {
         Ok(user) => {
-            let user_dto = generate_user_dto(
-                Some(user.id),
-                user.first_name,
-                user.last_name,
-                user.email,
-                None,
-                Some(user.created_at),
-                Some(user.updated_at),
-                user.deleted_at,
-            );
+            let user_dto = UserDTO::from(user);
+
             Ok(Response::builder()
                 .status(StatusCode::OK)
                 .body(Json(user_dto).into_response())
