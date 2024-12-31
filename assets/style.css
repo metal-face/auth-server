@@ -1,0 +1,72 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    background-color: grey;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.authenticate {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    border: solid 1px black;
+    border-radius: 0.5rem;
+    height: 50vh;
+    width: 50vh;
+}
+
+.button-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.github {
+    height: 42px;
+    border-radius: 0.5rem;
+    border: solid transparent;
+}
+
+#credentials-form {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 1rem;
+    width: 100%;
+}
+
+input {
+    border: solid transparent;
+    border-radius: 0.2rem;
+    margin: 0.25rem;
+    padding: 0.5rem;
+}
+
+.submit-button {
+    align-self: end;
+    height: 32px;
+    border: solid transparent;
+    border-radius: 0.2rem;
+    width: fit-content;
+    margin: 0.5rem;
+}
+
+.separator {
+    margin: 12px 0;
+    width: 100%;
+    border-bottom: solid 1px black;
+}
+
+.input {
+    display: flex;
+    flex-flow: column nowrap;
+}
