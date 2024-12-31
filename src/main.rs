@@ -8,6 +8,7 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 use std::sync::Arc;
 use std::time::Duration;
+use tower_http::services::ServeDir;
 
 mod api;
 mod models;
@@ -40,6 +41,7 @@ async fn main() {
         .route("/authenticate/credentials", post(log_in))
         .route("/authenticate/github/callback", post(github_authentication))
         .route("/users/:id", get(get_user))
+        .nest_service("/", ServeDir::new("assets"))
         .with_state(shared_state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:6969").await.unwrap();
