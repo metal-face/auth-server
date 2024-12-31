@@ -1,4 +1,5 @@
 use crate::api::v1::authenticate::credentials::authenticate::log_in;
+use crate::api::v1::authenticate::github::authenticate::github_authentication;
 use crate::api::v1::users::create_user::create_user;
 use crate::api::v1::users::get_user_by_id::get_user;
 use axum::routing::get;
@@ -7,7 +8,6 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 use std::sync::Arc;
 use std::time::Duration;
-use crate::api::v1::authenticate::github::authenticate::github_authentication;
 
 mod api;
 mod models;
@@ -38,7 +38,7 @@ async fn main() {
     let app = Router::new()
         .route("/users", post(create_user))
         .route("/authenticate/credentials", post(log_in))
-        .route("/authenticate/github", post(github_authentication))
+        .route("/authenticate/github/callback", post(github_authentication))
         .route("/users/:id", get(get_user))
         .with_state(shared_state);
 
