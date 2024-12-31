@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="metal-face">
+    <meta name="keywords" content="Rust, Axum, Authentication, Authorization, OAuth2">
+    <meta name="description" content="An authentication demonstration in the Rust ecosystem">
+    <link rel="stylesheet" href="./style.css">
+    <title>Authenticate</title>
+</head>
+<body>
+<main>
+    <div class="authenticate">
+        <div class="button-container">
+            <form id="credentials-form" name="credentials">
+                <div class="input">
+                    <label for="email">Email</label>
+                    <input id="email" type="email">
+                </div>
+                <div class="input">
+                    <label for="password">Password</label>
+                    <input id="password" type="password">
+                </div>
+                <button id="submit" type="button" class="submit-button">Submit</button>
+            </form>
+            <div class="separator"></div>
+            <button id="github" class="github" type="button">Login with GitHub</button>
+        </div>
+    </div>
+    <div>
+        <p>Not signed up yet? <a href="">Register.</a></p>
+    </div>
+</main>
+<script src="index.js"></script>
+</body>
+</html>
