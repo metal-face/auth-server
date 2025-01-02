@@ -37,6 +37,10 @@ main {
     border: solid transparent;
 }
 
+button {
+    cursor: pointer;
+}
+
 #credentials-form {
     display: flex;
     flex-flow: column nowrap;
