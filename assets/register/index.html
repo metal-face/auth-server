@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="metal-face">
+    <meta name="keywords" content="Rust, Axum, Authentication, Authorization, OAuth2">
+    <meta name="description" content="An authentication demonstration in the Rust ecosystem">
+    <link rel="stylesheet" href="../register/style.css">
+    <title>Register</title>
+</head>
+<body>
+<main>
+    <div class="register">
+        <div>
+            <h2 class="title">Register</h2>
+            <p>Input the required information below to register for an account.</p>
+        </div>
+
+        <div>
+            <form id="register-form" name="register">
+                <div class="input">
+                    <label for="firstName">First Name</label>
+                    <input id="firstName" type="text" placeholder="Bob"/>
+                    <p id="firstNameError" class="error"></p>
+                </div>
+                <div class="input">
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" type="text" placeholder="Lazar"/>
+                    <p id="lastNameError" class="error"></p>
+                </div>
+                <div class="input">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" placeholder="bob@losalomos.com"/>
+                    <p id="emailError" class="error"></p>
+                </div>
+                <div class="input">
+                    <label for="password">Password</label>
+                    <input id="password" type="password"/>
+                </div>
+            </form>
+            <div class="submit-button-container">
+                <button id="submit" type="button" class="submit-button">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p>Already a member? <a href="/">Login</a></p>
+    </div>
+</main>
+<script src="../register/index.js"></script>
+</body>
+</html>
