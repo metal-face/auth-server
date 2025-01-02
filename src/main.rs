@@ -42,6 +42,7 @@ async fn main() {
         .route("/authenticate/github/callback", post(github_authentication))
         .route("/users/:id", get(get_user))
         .nest_service("/", ServeDir::new("assets"))
+        .nest_service("/register", ServeDir::new("assets/register"))
         .with_state(shared_state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:6969").await.unwrap();
