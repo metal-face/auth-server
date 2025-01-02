@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: 'Work Sans', sans-serif;
+}
+
+main {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.register {
+    border: solid 1px black;
+    border-radius: 0.5rem;
+    height: 60vh;
+    width: 50vh;
+    margin: 1rem 1rem;
+    padding: 1rem 1rem;
+}
+
+.title {
+    text-align: center;
+    margin: 0.25rem;
+}
+
+.instructions {
+}
+
+.input {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0.5rem;
+    border: solid transparent;
+    border-radius: 0.2rem;
+}
+
+input {
+    height: 24px;
+    border-radius: 0.2rem;
+}
+
+.error {
+    margin: 0;
+    padding: 0;
+}
+
+.submit-button {
+    height: 32px;
+    border: solid transparent;
+    border-radius: 0.2rem;
+    margin: 1rem;
+    cursor: pointer;
+}
+
+.submit-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
