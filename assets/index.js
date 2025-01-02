@@ -1,17 +1,38 @@
 window.addEventListener("load", () => {
-    console.log("loaded");
-
     let token = localStorage.getItem("token");
-    if (token.length > 0) {
+    if (token) {
         alert("you're logged in")
         window.location.href = "https://bryan-hughes.com"
     }
 });
 
+function createStatusMessage(success, form) {
+    let messageContainer = document.createElement("div");
+    let messageParagraph = document.createElement("p");
+    messageParagraph.id = "message";
+
+    if (success) {
+        form[0].style.borderColor = "green";
+        form[1].style.borderColor = "green";
+
+        messageParagraph.innerText = "Success! You're now logged in!";
+    } else {
+        form[0].style.borderColor = "red";
+        form[1].style.borderColor = "red";
+
+        form[0].value = "";
+        form[1].value = "";
+
+        messageParagraph.innerText = "Invalid email or password";
+    }
+
+    messageContainer.appendChild(messageParagraph);
+    form.appendChild(messageContainer);
+}
+
 let githubButton = document.getElementById("github");
 
 githubButton.addEventListener("click", (e) => {
-    e.preventDefault();
     document.getElementById("email").innerText = "balls";
 });
 
@@ -35,33 +56,19 @@ submitButton.addEventListener("click", async (e) => {
         }),
     });
 
+    let message = document.getElementById("message");
+    if (message) {
+        message.remove();
+    }
+
     if (!req.ok) {
-        form[0].style.borderColor = "red";
-        form[1].style.borderColor = "red";
-
-        form[0].value = "";
-        form[1].value = "";
-
-        const message = "Invalid email or password";
-        let messageContainer = document.createElement("div");
-        let messageParagraph = document.createElement("p");
-        messageParagraph.innerText = message;
-        messageContainer.appendChild(messageParagraph);
-        form.appendChild(messageContainer);
+        createStatusMessage(false, form);
     }
 
     if (req.ok) {
         let token = await req.json();
         window.localStorage.setItem("token", token);
 
-        form[0].style.borderColor = "green";
-        form[1].style.borderColor = "green";
-
-        const message = "Success! You're now logged in!";
-        let messageContainer = document.createElement("div");
-        let messageParagraph = document.createElement("p");
-        messageParagraph.innerText = message;
-        messageContainer.appendChild(messageParagraph);
-        form.appendChild(messageContainer);
+        createStatusMessage(true, form);
     }
 })
