@@ -31,9 +31,8 @@ function createStatusMessage(success, form) {
 }
 
 let githubButton = document.getElementById("github");
-
 githubButton.addEventListener("click", (e) => {
-    document.getElementById("email").innerText = "balls";
+    document.getElementById("email").value = "balls";
 });
 
 let submitButton = document.getElementById("submit");
