@@ -21,22 +21,39 @@
             <form id="register-form" name="register">
                 <div class="input">
                     <label for="firstName">First Name</label>
-                    <input id="firstName" type="text" placeholder="Bob"/>
+                    <input
+                            id="firstName"
+                            minlength="3"
+                            maxlength="20"
+                            type="text"
+                            placeholder="Bob"
+                            required
+                            onblur="reportValidity()"
+                    />
                     <p id="firstNameError" class="error"></p>
                 </div>
                 <div class="input">
                     <label for="lastName">Last Name</label>
-                    <input id="lastName" type="text" placeholder="Lazar"/>
+                    <input
+                            id="lastName"
+                            minlength="3"
+                            maxlength="20"
+                            type="text"
+                            placeholder="Lazar"
+                            required
+                            onblur="reportValidity()"
+                    />
                     <p id="lastNameError" class="error"></p>
                 </div>
                 <div class="input">
                     <label for="email">Email</label>
-                    <input id="email" type="email" placeholder="bob@losalomos.com"/>
+                    <input id="email" type="email" placeholder="bob@losalomos.com" required onblur="reportValidity()"/>
                     <p id="emailError" class="error"></p>
                 </div>
                 <div class="input">
                     <label for="password">Password</label>
-                    <input id="password" type="password"/>
+                    <input id="password" minlength="12" type="password" required onblur="reportValidity()"/>
+                    <p id="passwordError" class="error"></p>
                 </div>
             </form>
             <div class="submit-button-container">
