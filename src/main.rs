@@ -39,7 +39,7 @@ async fn main() {
     let app = Router::new()
         .route("/users", post(create_user))
         .route("/authenticate/credentials", post(log_in))
-        .route("/authenticate/github/callback", post(github_authentication))
+        .route("/authenticate/github/callback", get(github_authentication))
         .route("/users/:id", get(get_user))
         .nest_service("/", ServeDir::new("assets"))
         .nest_service("/register", ServeDir::new("assets/register"))
