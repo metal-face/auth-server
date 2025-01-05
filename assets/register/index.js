@@ -1,4 +1,4 @@
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     let token = localStorage.getItem('token');
     if (token) {
         window.location.href = 'https://bryan-hughes.com';
@@ -6,7 +6,7 @@ window.addEventListener('load', () => {
 });
 
 let registerButton = document.getElementById('submit');
-registerButton.addEventListener('click', () => {
+registerButton.addEventListener('click', async () => {
     let form = document.forms["register"];
     let errors = document.getElementsByClassName("error");
 
@@ -49,16 +49,22 @@ registerButton.addEventListener('click', () => {
         }
     }
 
-    let req = fetch("http://localhost:6969/users", {
+    let req = await fetch("http://localhost:6969/users", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            firstName: form["firstName"].value,
-            lastName: form["lastName"].value,
+            first_name: form["firstName"].value,
+            last_name: form["lastName"].value,
             email: form["email"].value,
             password: form["password"].value
         })
-    })
+    });
+
+    if (!req.ok) {
+
+    }
+
+    console.log(req);
 });
