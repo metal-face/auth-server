@@ -2,7 +2,7 @@ window.addEventListener("load", () => {
     let token = localStorage.getItem("token");
     if (token) {
         alert("you're logged in")
-        window.location.href = "https://bryan-hughes.com"
+        // window.location.href = "https://bryan-hughes.com"/
     }
 });
 
@@ -32,7 +32,7 @@ function createStatusMessage(success, form) {
 
 let githubButton = document.getElementById("github");
 githubButton.addEventListener("click", (e) => {
-    document.getElementById("email").value = "balls";
+    window.location.href = `https://github.com/login/oauth/authorize?scope=user:email&client_id=Ov23lirTS85VvAkc9GOm`;
 });
 
 let submitButton = document.getElementById("submit");
